@@ -83,8 +83,8 @@ public class Calculadora extends HttpServlet {
             out.println("<br>");
             out.println("   ");
             out.println("   <form action=''>");
-            out.println(String.format("       <label for='nome'>Valor 1: <input type='number' name='numero1' value='%.0f'><br>", calculo.getValor1()));
-            out.println(String.format("       <label for='nome'>Valor 2: <input type='number' name='numero2' value='%.0f'><br>", calculo.getValor2()));
+            out.println(String.format("       <label for='nome'>Valor 1: <input type='number' name='numero1' value='%.0f'><br>", calculo != null ? calculo.getValor1() : null));
+            out.println(String.format("       <label for='nome'>Valor 2: <input type='number' name='numero2' value='%.0f'><br>", calculo != null ? calculo.getValor2() : null));
             out.println("<br>");
             out.println("       <input type='submit' name='operacao' value='+'>");
             out.println("       <input type='submit' name='operacao' value='-'>");
