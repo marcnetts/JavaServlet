@@ -7,18 +7,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import negocio.Adicao;
-import negocio.Calculo;
-import negocio.Divisao;
-import negocio.Multiplicacao;
-import negocio.Subtracao;
 
 /**
  *
  * @author marcnetts
  */
-@WebServlet(name = "Calculadora", urlPatterns = {"/calculadora"})
-public class Calculadora extends HttpServlet {
+@WebServlet(name = "ServletForm", urlPatterns = {"/figurasform"})
+public class ServletForm extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,9 +29,6 @@ public class Calculadora extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             
-            String operacao = request.getParameter("operacao");
-            Calculo calculo = null;
-            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -45,51 +37,16 @@ public class Calculadora extends HttpServlet {
             out.println("<body>");
             out.println("   <h1>Fatec-RL</h1>");
             out.println("   <h2>ADS - ELE2 - 5o. matutino</h2>");
-            out.println("   <h4>Calculadora JSP</h4>");
+            out.println("   <h4>Figuras JSP</h4>");
             out.println("   ");
-            if(operacao != null){
-                switch(operacao){
-                    case "+":
-                        calculo = new Adicao();
-                        break;
-                    case "-":
-                        calculo = new Subtracao();
-                        break;
-                    case "*":
-                        calculo = new Multiplicacao();
-                        break;
-                    case "/":
-                        calculo = new Divisao();
-                        break;
-                    default:
-                        break;
-                }
-
-                try{
-                    calculo.setValor1(Float.valueOf(request.getParameter("numero1")));
-                    calculo.setValor2(Float.valueOf(request.getParameter("numero2")));
-                    try{
-                        calculo.calcular();
-                        out.println(String.format("   <span>Numeros passados: %f %s %f = %f</span><br>", calculo.getValor1(), operacao, calculo.getValor2(), calculo.getResultado()));
-                    }
-                    catch(Exception e){
-                        out.println(String.format("   <span>Numeros passados: %f %s %f = Divisao por zero!</span><br>", calculo.getValor1(), operacao, calculo.getValor2()));
-                    }
-                }
-                catch(Exception e){
-                    out.println("   <span>Um ou mais valores passados estão incorretos! Passe apenas números.</span><br>");
-                }
-            }
             out.println("<br>");
             out.println("   ");
-            out.println("   <form action=''>");
-            out.println(String.format("       <label for='numero1'>Valor 1:</label> <input type='number' id='numero1' name='numero1' value='%.0f' required><br>", calculo != null ? calculo.getValor1() : null));
-            out.println(String.format("       <label for='numero2'>Valor 2:</label> <input type='number' id='numero2' name='numero2' value='%.0f' required><br>", calculo != null ? calculo.getValor2() : null));
+            out.println("   <form action='figurasresult'>");
+            out.println("       <label for='largura'>Largura:</label> <input type='number' step='any' id='largura' name='largura' required><br>");
+            out.println("       <label for='altura'>Altura:</label> <input type='number' step='any' id='altura' name='altura' required><br>");
             out.println("<br>");
-            out.println("       <input type='submit' name='operacao' value='+'>");
-            out.println("       <input type='submit' name='operacao' value='-'>");
-            out.println("       <input type='submit' name='operacao' value='*'>");
-            out.println("       <input type='submit' name='operacao' value='/'>");
+            out.println("       <input type='submit' name='operacao' value='tri'>");
+            out.println("       <input type='submit' name='operacao' value='ret'>");
             out.println("   </form>");
             out.println("</body>");
             out.println("</html>");
