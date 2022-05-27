@@ -7,13 +7,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import negocio.Media;
 
 /**
  *
  * @author marcnetts
  */
-@WebServlet(name = "UpperDownCase", urlPatterns = {"/upperdowncase"})
-public class UpperDownCase extends HttpServlet {
+@WebServlet(name = "ServletConversaoDeMedia", urlPatterns = {"/mediaresut"})
+public class ServletConversaoDeMedia extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,9 +29,9 @@ public class UpperDownCase extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             
-            String palavra = request.getParameter("palavra");
+            Media media = new Media();
+            float p1, p2, tp;
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -40,35 +41,42 @@ public class UpperDownCase extends HttpServlet {
             out.println("<body>");
             out.println("   <h1>Fatec-RL</h1>");
             out.println("   <h2>ADS - ELE2 - 5o. matutino</h2>");
-            out.println("   <h4>Upper/Lowercase JSP</h4>");
+            out.println("   <h4>Médias de nota</h4>");
             out.println("   ");
-            out.println("<br><a href='./'>Voltar</a><br>");
+            out.println("<br><a href='formmedia'>Voltar</a><br>");
             out.println("<br>");
-            if(palavra != null && palavra != ""){
-                out.println(String.format("   <span>Palavra original: %s</span><br>", palavra));
-                out.println(String.format("   <span>Palavra original: %s</span><br>", retornarMaiusculo(palavra)));
-                out.println(String.format("   <span>Palavra original: %s</span><br>", retornarMinusculo(palavra)));
-                out.println("<br>");
+            try{
+                p1 = Float.valueOf(request.getParameter("p1"));
+                p2 = Float.valueOf(request.getParameter("p2"));
             }
-            out.println("   ");
-            out.println("   <form action=''>");
-            out.println("      <label for='nome'>Palavra a testar: <input type='text' name='palavra'><br>");
-            out.println("<br>");
-            out.println("      <input type='submit' value='Enviar dados'>");
-            out.println("   </form>");
+            catch(NumberFormatException e){
+                out.println("   Houve um erro em um dos parâmetros passados.");
+                out.println("</body>");
+                out.println("</html>");
+                return;
+            }
+            if (request.getParameter("tp") != ""){
+                try{
+                    tp = Float.valueOf(request.getParameter("tp"));
+                }
+                catch(NumberFormatException e){
+                    out.println("   Houve um erro em um dos parâmetros passados.");
+                    out.println("</body>");
+                    out.println("</html>");
+                    return;
+                }
+                media.calcularMedia(p1, p2, tp);
+            }
+            else{
+                media.calcularMedia(p1, p2);
+            }
+            
+            out.println(String.format("   <h3>Média das notas = %f</h3><br>", media.getMedia()));
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    public String retornarMaiusculo(String palavra){
-        return palavra.toUpperCase();
-    }
-    
-    public String retornarMinusculo(String palavra){
-        return palavra.toLowerCase();
-    }
-    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

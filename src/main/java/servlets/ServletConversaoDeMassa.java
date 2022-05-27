@@ -7,13 +7,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import negocio.Massa;
 
 /**
  *
  * @author marcnetts
  */
-@WebServlet(name = "UpperDownCase", urlPatterns = {"/upperdowncase"})
-public class UpperDownCase extends HttpServlet {
+@WebServlet(name = "ServletConversaoDeMassa", urlPatterns = {"/massasresut"})
+public class ServletConversaoDeMassa extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,9 +29,10 @@ public class UpperDownCase extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             
-            String palavra = request.getParameter("palavra");
+            String operacao;
+            Massa massa = new Massa();
+            float massaInic, massaConv;
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -40,35 +42,40 @@ public class UpperDownCase extends HttpServlet {
             out.println("<body>");
             out.println("   <h1>Fatec-RL</h1>");
             out.println("   <h2>ADS - ELE2 - 5o. matutino</h2>");
-            out.println("   <h4>Upper/Lowercase JSP</h4>");
+            out.println("   <h4>Conversão de Peso</h4>");
             out.println("   ");
-            out.println("<br><a href='./'>Voltar</a><br>");
+            out.println("<br><a href='formmassa'>Voltar</a><br>");
             out.println("<br>");
-            if(palavra != null && palavra != ""){
-                out.println(String.format("   <span>Palavra original: %s</span><br>", palavra));
-                out.println(String.format("   <span>Palavra original: %s</span><br>", retornarMaiusculo(palavra)));
-                out.println(String.format("   <span>Palavra original: %s</span><br>", retornarMinusculo(palavra)));
-                out.println("<br>");
+            try{
+                operacao = request.getParameter("operacao");
+                massaInic = Float.valueOf(request.getParameter("massa"));
             }
-            out.println("   ");
-            out.println("   <form action=''>");
-            out.println("      <label for='nome'>Palavra a testar: <input type='text' name='palavra'><br>");
-            out.println("<br>");
-            out.println("      <input type='submit' value='Enviar dados'>");
-            out.println("   </form>");
+            catch(NumberFormatException e){
+                out.println("   Houve um erro em um dos parâmetros passados.");
+                out.println("</body>");
+                out.println("</html>");
+                return;
+            }
+            switch(operacao){
+                case "libraparakg":
+                    massaConv = massa.converterLibraParaQuilo(massaInic);
+                    out.println(String.format("   <span>%flb para kg = %fkg</span><br>", massaInic, massaConv));
+                    break;
+                case "kgparalibra":
+                    massaConv = massa.converterQuiloParaLibra(massaInic);
+                    out.println(String.format("   <span>%fkg para lb = %flb</span><br>", massaInic, massaConv));
+                    break;
+                default:
+                    out.println("   Houve um erro em um dos parâmetros passados.");
+                    out.println("</body>");
+                    out.println("</html>");
+                    return;
+            }
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    public String retornarMaiusculo(String palavra){
-        return palavra.toUpperCase();
-    }
-    
-    public String retornarMinusculo(String palavra){
-        return palavra.toLowerCase();
-    }
-    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

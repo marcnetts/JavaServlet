@@ -2,7 +2,7 @@ package negocio;
 
 /**
  *
- * @author marcoszanetti
+ * @author marcnetts
  */
 public interface IFigura {
     void calcularArea();

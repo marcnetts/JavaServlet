@@ -2,7 +2,7 @@ package negocio;
 
 /**
  *
- * @author marcoszanetti
+ * @author marcnetts
  */
 public abstract class Figura implements IFigura {
     protected float largura;

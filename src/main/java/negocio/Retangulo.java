@@ -2,7 +2,7 @@ package negocio;
 
 /**
  *
- * @author marcoszanetti
+ * @author marcnetts
  */
 public class Retangulo extends Figura {
     
